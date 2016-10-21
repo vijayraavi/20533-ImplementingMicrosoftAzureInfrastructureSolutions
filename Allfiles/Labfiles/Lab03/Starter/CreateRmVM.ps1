@@ -40,7 +40,7 @@ foreach ($subnet in $vnet.subnets)
 
 $location 	= $vnet.Location
 
-$storageAccount	= Get-AzureRmStorageAccount | Where-Object {($_.Location -eq $location) -and ($_.ResourceGroupName -eq $rgName)}
+$storageAccount = (Get-AzureRmStorageAccount | Where-Object {($_.Location -eq $location) -and ($_.ResourceGroupName -eq $rgName) -and ($_.StorageAccountName -like $($rgName.ToLower() + "disks*"))})[0]
 
 $adminUsername = 'Student'
 $adminPassword = 'Pa$$w0rd1234'
