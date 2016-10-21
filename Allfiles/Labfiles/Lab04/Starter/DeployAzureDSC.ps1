@@ -4,7 +4,7 @@ Show-SubscriptionARM
 
 $resourceGroupName = 'ResDevWebRG'
 
-$storageAccount = Get-AzureRmStorageAccount -ResourceGroupName $resourceGroupName
+$storageAccount = (Get-AzureRmStorageAccount | Where-Object {($_.Location -eq $location) -and ($_.ResourceGroupName -eq $rgName) -and ($_.StorageAccountName -like $($rgName.ToLower() + "disks*"))})[0]
 $storageAccountKey = (Get-AzureRmStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccount.StorageAccountName).Key1
 
 # to account for changes described in https://msdn.microsoft.com/en-us/library/mt607145.aspx (per input from molenaar)
