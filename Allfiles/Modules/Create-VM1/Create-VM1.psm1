@@ -9,6 +9,9 @@ $subnet = 'Subnet-1'       #Note: also hard-coded in NetworkConfig.xml
 $global:adminname = 'Student'
 $global:adminpassword = 'Pa$$w0rd123'
 $RDPfilesdir = 'D:\Labfiles\Lab' + "{0:00}" -f $labno + '\Starter\'
+If (-not (Test-Path $RDPfilesdir) ){ 
+     New-Item -Path $RDPfilesdir -Type directory | Out-Null
+}
 $RDPendpoint = 3388 + $vmno
 $PSendpoint = 5985 + $vmno
 $instancesize = 'Small'    #Should be standard tier
