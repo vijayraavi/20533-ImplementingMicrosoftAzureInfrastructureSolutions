@@ -17,7 +17,7 @@ $storageAccountKey = (Get-AzureRmStorageAccountKey -ResourceGroupName $resourceG
 $containerName = 'windows-powershell-dsc'
 
 $configurationName = 'IISInstall'
-$configurationPath = ".\$configurationName.ps1"
+$configurationPath = "D:\Labfiles\Lab04\Starter\$configurationName.ps1"
 
 $moduleURL = Publish-AzureRmVMDscConfiguration -ConfigurationPath $configurationPath -ResourceGroupName $resourceGroupName -StorageAccountName $storageAccount.StorageAccountName -Force
 
