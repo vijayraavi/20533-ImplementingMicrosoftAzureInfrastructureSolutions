@@ -3,7 +3,7 @@ Login-AzureRmAccount
 Show-SubscriptionARM
 
 $resourceGroupName = 'ResDevWebRG'
-$location = 'west europe' # you need to change this parameter for your deployment
+$location = 'westeurope' # you need to change this parameter for your deployment
 
 $storageAccount = (Get-AzureRmStorageAccount | Where-Object {($_.Location -eq $location) -and ($_.ResourceGroupName -eq $resourceGroupName) -and ($_.StorageAccountName -like $($resourceGroupName.ToLower() + "disks*"))})[0]
 $storageAccountKey = (Get-AzureRmStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccount.StorageAccountName).Key1
