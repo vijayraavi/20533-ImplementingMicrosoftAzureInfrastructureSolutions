@@ -5,7 +5,7 @@ Show-SubscriptionARM
 $resourceGroupName = 'Demo4RG'
 
 $storageAccount = Get-AzureRmStorageAccount -ResourceGroupName $resourceGroupName
-$storageAccountKey = (Get-AzureRmStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccount.StorageAccountName).Key1
+$storageAccountKey = (Get-AzureRmStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccount.StorageAccountName)[0].Value
 
 # we are using default container 
 $containerName = 'windows-powershell-dsc'
