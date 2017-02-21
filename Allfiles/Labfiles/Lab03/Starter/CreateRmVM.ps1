@@ -42,7 +42,7 @@ $location 	= $vnet.Location
 
 $storageAccount = (Get-AzureRmStorageAccount | Where-Object {($_.Location -eq $location) -and ($_.ResourceGroupName -eq $rgName) -and ($_.StorageAccountName -like $($rgName.ToLower() + "disks*"))})[0]
 
-$adminUsername = 'Student'
+$adminUsername = 'Student' 
 $adminPassword = 'Pa$$w0rd1234'
 $adminCreds 	= New-Object PSCredential $adminUsername, ($adminPassword | ConvertTo-SecureString -AsPlainText -Force) 
 
