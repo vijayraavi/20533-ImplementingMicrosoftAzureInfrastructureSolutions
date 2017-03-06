@@ -16,7 +16,7 @@
 16,Sheldon,Comeaux
 17,Abel,Bevins
 18,Rocco,Yarborough
-19,Brain,Dulaney
+19,Brian,Dulaney
 20,Thaddeus,Danforth
 21,Nickolas,McLaughlin
 22,Elwood,McGee
@@ -25,7 +25,7 @@
 25,Frederic,Towle
 26,Neandro,Baeza
 27,Germain,Arenas
-28,Modesto,Cab·n
+28,Modesto,Cab√°n
 29,Amalio,Pizarro
 30,Agnano,Brito
 31,Armen,Romo

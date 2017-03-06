@@ -19,8 +19,10 @@ $vmName 	= "ResDevDB2"
 $vmSize 	= "Standard_A1"
 
 $pubName	= "MicrosoftWindowsServer"
-$offerName	= "WindowsServer"
-$skuName	= "2012-R2-Datacenter"
+
+$offerName	= "WindowsServer"
+
+$skuName	= "2012-R2-Datacenter"
 $diskName	= "OSDisk"
 
 # Identify virtual network and subnet
@@ -38,10 +40,10 @@ foreach ($subnet in $vnet.subnets)
 
 $location 	= $vnet.Location
 
-$storageAccount	= Get-AzureRmStorageAccount | Where-Object {($_.Location -eq $location) -and ($_.ResourceGroupName -eq $rgName)}
+$storageAccount = (Get-AzureRmStorageAccount | Where-Object {($_.Location -eq $location) -and ($_.ResourceGroupName -eq $rgName) -and ($_.StorageAccountName -like $($rgName.ToLower() + "disks*"))})[0]
 
-$adminUsername = 'Student'
-$adminPassword = 'Pa$$w0rd'
+$adminUsername = 'Student' 
+$adminPassword = 'Pa$$w0rd1234'
 $adminCreds 	= New-Object PSCredential $adminUsername, ($adminPassword | ConvertTo-SecureString -AsPlainText -Force) 
 
 $uniqueNumber = (Get-Date).Ticks.ToString().Substring(12)
@@ -62,9 +64,14 @@ $vm		= New-AzureRmVMConfig -VMName $vmName -VMSize $vmSize
 $vm		= Add-AzureRmVMNetworkInterface -VM $vm -Id $nic.Id
 
 $vm		= Set-AzureRmVMOperatingSystem -VM $vm -Windows -ComputerName $vmName -Credential $adminCreds 
-$vm		= Set-AzureRmVMSourceImage -VM $vm -PublisherName $pubName -Offer $offerName -Skus $skuName -Version "latest"
-$osDiskUri	= $storageAccount.PrimaryEndpoints.Blob.ToString() + "vhds/" + $vmName + $diskName  + ".vhd"
-$vm		= Set-AzureRmVMOSDisk -VM $vm -Name $diskName -VhdUri $osDiskUri -CreateOption fromImage
+
+$vm		= Set-AzureRmVMSourceImage -VM $vm -PublisherName $pubName -Offer $offerName -Skus $skuName -Version "latest"
+
+
+
+$osDiskUri	= $storageAccount.PrimaryEndpoints.Blob.ToString() + "vhds/" + $vmName + $diskName  + ".vhd"
+
+$vm		= Set-AzureRmVMOSDisk -VM $vm -Name $diskName -VhdUri $osDiskUri -CreateOption fromImage
 
 
 #Create the VM

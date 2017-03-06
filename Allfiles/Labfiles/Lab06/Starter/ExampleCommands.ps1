@@ -7,7 +7,9 @@
 
 
 #This code uses AzCopy to copy .png files to the asset-images container in your storage account
-AzCopy /Dest:https://<your storage account>.blob.core.windows.net/asset-images /destkey:<your primary access key> /Source:asset-images
+
+AzCopy /Dest:https://<your storage account>.blob.core.windows.net/asset-images /destkey:<your primary access key> /Source:D:\Labfiles\Lab06\Starter\asset-images
+
 # SIG # Begin signature block
 # MIIatQYJKoZIhvcNAQcCoIIapjCCGqICAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR

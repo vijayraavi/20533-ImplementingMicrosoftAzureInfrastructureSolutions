@@ -3,15 +3,21 @@ Login-AzureRmAccount
 Show-SubscriptionARM
 
 $resourceGroupName = 'ResDevWebRG'
+$location = 'westeurope' # you need to change this parameter for your deployment
 
-$storageAccount = Get-AzureRmStorageAccount -ResourceGroupName $resourceGroupName
+$storageAccount = (Get-AzureRmStorageAccount | Where-Object {($_.Location -eq $location) -and ($_.ResourceGroupName -eq $resourceGroupName) -and ($_.StorageAccountName -like $($resourceGroupName.ToLower() + "disks*"))})[0]
 $storageAccountKey = (Get-AzureRmStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccount.StorageAccountName).Key1
+
+# to account for changes described in https://msdn.microsoft.com/en-us/library/mt607145.aspx (per input from molenaar)
+If (!($storageAccountKey)) {
+$storageAccountKey = (Get-AzureRmStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccount.StorageAccountName).Value[0]
+}
 
 # we are using default container 
 $containerName = 'windows-powershell-dsc'
 
 $configurationName = 'IISInstall'
-$configurationPath = ".\$configurationName.ps1"
+$configurationPath = "D:\Labfiles\Lab04\Starter\$configurationName.ps1"
 
 $moduleURL = Publish-AzureRmVMDscConfiguration -ConfigurationPath $configurationPath -ResourceGroupName $resourceGroupName -StorageAccountName $storageAccount.StorageAccountName -Force
 

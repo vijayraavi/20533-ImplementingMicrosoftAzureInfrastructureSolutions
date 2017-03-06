@@ -1,6 +1,6 @@
 workflow New-StorageAndVMs
 {
-    $Credential = Get-AutomationPSCredential -Name 'DefaultAzureCredential'
+    $Credential = Get-AutomationPSCredential -Name 'PSCredential'
     $SubscriptionName = Get-AutomationVariable -Name 'SubscriptionName'
     $AdminName = Get-AutomationVariable -Name 'AdminName'
     $AdminPassword = Get-AutomationVariable -Name 'AdminPassword' 

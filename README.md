@@ -12,4 +12,4 @@ How should I use these files relative to the released MOC files?
 What about changes to the student handbook?
 - We will review the student handbook on a quarterly basis and update through the normal MOC release channels as needed.
 
-Refer to the GitHubUserGuide.docx file on the Download Center for detailed instructions for using GitHub. This document is also available on the GitHub repo as GitHubUserGuide.md.  
+Refer to the 20533CGitHubUserGuideforMCTs.pdf file on the Download Center for detailed instructions for using GitHub. This document is also available on the GitHub repo as 20533CGitHubUserGuideforMCTs.md.
