@@ -1,0 +1,11 @@
+Lab 1. Managing Microsoft Azure. Setup will remove any cached Azure subscription details from the current Windows PowerShell session.
+Lab 2. Creating Virtual Networks and Connecting Virtual Networks. Setup will remove any cached Azure subscription details from the current Windows PowerShell session.
+Lab 3. Implementing Virtual Machines. Setup will create a storage account in the Azure region you select, then create a virtual network (ADATUM-HQ-VNET), and then remove any cached Azure subscription details from the current Windows PowerShell session.
+Lab 4. Managing Virtual Machines. Setup will remove any cached Azure subscription details from the current Windows PowerShell session.
+Lab 5. Implementing Websites. Setup will remove any cached Azure subscription details from the current Windows PowerShell session.
+Lab 6. Planning and Implementing Storage. Setup will deploy a Windows Server 2016 Azure VM (AdatumSvr06) and then remove any cached Azure subscription details from the current Windows PowerShell session.
+Lab 7. Planning and Implementing Azure SQL Database. Setup will create a local SQL database and then remove any cached Azure subscription details from the current Windows PowerShell session.
+Lab 8. Implementing PaaS Cloud Services. Setup will remove any cached Azure subscription details from the current Windows PowerShell session.
+Lab 9. Implementing Azure Active Directory. Setup will remove any cached Azure subscription details from the current Windows PowerShell session.
+Lab 10. Managing an Active Directory Hybrid Environment. Setup will deploy a Windows Server 2016 Azure VM hosting a domain controller and then remove any cached Azure subscription details from the current Windows PowerShell session.
+Lab 11. Implementing Automation. Setup will deploy a pair of Windows Server 2016 Azure VMs and then remove any cached Azure subscription details from the current Windows PowerShell session.
