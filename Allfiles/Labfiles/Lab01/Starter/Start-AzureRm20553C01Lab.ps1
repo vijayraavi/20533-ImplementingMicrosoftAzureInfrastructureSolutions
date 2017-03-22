@@ -3,7 +3,7 @@
 # Variables
 $rg1Name 	= '20533C0101-LabRG' # test resource group created in Exercise 2
 $rg2Name 	= '20533C0102-LabRG' # resource group name to which you will move the resource
-$resName	= 'adatum.com'
+$resName	= 'AdatumRT01'
 
 # Identify the location of the resource group containing the resource
 
