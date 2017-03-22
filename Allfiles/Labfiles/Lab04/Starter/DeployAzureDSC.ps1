@@ -2,7 +2,7 @@ Login-AzureRmAccount
 
 Show-SubscriptionARM
 
-$resourceGroupName = 'ResDevWebAS'
+$resourceGroupName = '20533C0401-LabRG'
 
 $storageAccount = Get-AzureRmStorageAccount -ResourceGroupName $resourceGroupName
 $storageAccountKey = (Get-AzureRmStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccount.StorageAccountName).Key1
