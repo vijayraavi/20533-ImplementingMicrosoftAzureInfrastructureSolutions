@@ -257,47 +257,47 @@
           ]
         }
       },
-      "resources": [
-        {
-          "type": "extensions",
-          "name": "CreateADForest",
-          "apiVersion": "2015-06-15",
-          "location": "[resourceGroup().location]",
-          "dependsOn": [
-            "[resourceId('Microsoft.Compute/virtualMachines', variables('adVMName'))]"
-          ],
-          "properties": {
-            "publisher": "Microsoft.Powershell",
-            "type": "DSC",
-            "typeHandlerVersion": "2.19",
-            "autoUpgradeMinorVersion": true,
-            "settings": {
-              "ModulesUrl": "[concat(parameters('_artifactsLocation'), '/DSC/CreateADPDC.zip', parameters('_artifactsLocationSasToken'))]",
-              "ConfigurationFunction": "CreateADPDC.ps1\\CreateADPDC",
-              "Properties": {
-                "DomainName": "[parameters('domainName')]",
-                "AdminCreds": {
-                  "UserName": "[parameters('adminUsername')]",
-                  "Password": "PrivateSettingsRef:AdminPassword"
-                }
-              }
-            },
-            "protectedSettings": {
-              "Items": {
-                "AdminPassword": "[parameters('adminPassword')]"
-              }
-            }
-          }
-        }
-      ]
+      //"resources": [
+      //  {
+      //    "type": "extensions",
+      //    "name": "CreateADForest",
+      //    "apiVersion": "2015-06-15",
+      //    "location": "[resourceGroup().location]",
+      //    "dependsOn": [
+      //      "[resourceId('Microsoft.Compute/virtualMachines', variables('adVMName'))]"
+      //    ],
+      //    "properties": {
+      //      "publisher": "Microsoft.Powershell",
+      //      "type": "DSC",
+      //      "typeHandlerVersion": "2.19",
+      //      "autoUpgradeMinorVersion": true,
+      //      "settings": {
+      //        "ModulesUrl": "[concat(parameters('_artifactsLocation'), '/DSC/CreateADPDC.zip', parameters('_artifactsLocationSasToken'))]",
+      //        "ConfigurationFunction": "CreateADPDC.ps1\\CreateADPDC",
+      //        "Properties": {
+      //          "DomainName": "[parameters('domainName')]",
+      //          "AdminCreds": {
+      //            "UserName": "[parameters('adminUsername')]",
+      //            "Password": "PrivateSettingsRef:AdminPassword"
+      //          }
+      //        }
+      //      },
+      //      "protectedSettings": {
+      //        "Items": {
+      //          "AdminPassword": "[parameters('adminPassword')]"
+      //        }
+      //      }
+      //    }
+      //  }
+      //]
     },
     {
       "type": "Microsoft.Resources/deployments",
       "name": "UpdateVNetDNS",
       "apiVersion": "2016-02-01",
-      "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines/extensions', variables('adVMName'), 'CreateADForest')]"
-      ],
+      //"dependsOn": [
+      //  "[resourceId('Microsoft.Compute/virtualMachines/extensions', variables('adVMName'), 'CreateADForest')]"
+      //],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
