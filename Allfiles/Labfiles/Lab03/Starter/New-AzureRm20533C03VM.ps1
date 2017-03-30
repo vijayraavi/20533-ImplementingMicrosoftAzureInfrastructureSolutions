@@ -11,16 +11,12 @@ Show-SubscriptionARM
 $rgName		= "20533C0301-LabRG"
 
 $vnetName 	= "HQ-VNET"
-
 $subnetName 	= "Database"
-
 $vmName 	= "ResDevDB2"
-
 $vmSize 	= "Standard_A1"
-
 $pubName	= "MicrosoftWindowsServer"
-$offerName	= "WindowsServer"
-$skuName	= "2016-Datacenter"
+$offerName	= "WindowsServer"
+$skuName	= "2016-Datacenter"
 $diskName	= "OSDisk"
 
 # Identify virtual network and subnet
@@ -51,21 +47,16 @@ $nicName = '20533C0301nic' + $uniqueNumber
 # Create PIP and NIC
 
 $pip 		= New-AzureRmPublicIpAddress -Name $nicName -ResourceGroupName $rgName -Location $location -AllocationMethod Dynamic
-
 $nic 		= New-AzureRmNetworkInterface -Name $pipName -ResourceGroupName $rgName -Location $location -SubnetId $subnetid -PublicIpAddressId $pip.Id
-
-
 
 # Set VM Configuration
 
 $vm		= New-AzureRmVMConfig -VMName $vmName -VMSize $vmSize
 $vm		= Add-AzureRmVMNetworkInterface -VM $vm -Id $nic.Id
-
 $vm		= Set-AzureRmVMOperatingSystem -VM $vm -Windows -ComputerName $vmName -Credential $adminCreds 
-$vm		= Set-AzureRmVMSourceImage -VM $vm -PublisherName $pubName -Offer $offerName -Skus $skuName -Version "latest"
-$osDiskUri	= $storageAccount.PrimaryEndpoints.Blob.ToString() + "vhds/" + $vmName + $diskName  + ".vhd"
-$vm		= Set-AzureRmVMOSDisk -VM $vm -Name $diskName -VhdUri $osDiskUri -CreateOption fromImage
-
+$vm		= Set-AzureRmVMSourceImage -VM $vm -PublisherName $pubName -Offer $offerName -Skus $skuName -Version "latest"
+$osDiskUri	= $storageAccount.PrimaryEndpoints.Blob.ToString() + "vhds/" + $vmName + $diskName  + ".vhd"
+$vm		= Set-AzureRmVMOSDisk -VM $vm -Name $diskName -VhdUri $osDiskUri -CreateOption fromImage
 
 #Create the VM
 
