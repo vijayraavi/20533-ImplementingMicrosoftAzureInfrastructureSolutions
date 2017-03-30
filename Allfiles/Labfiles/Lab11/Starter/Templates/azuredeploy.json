@@ -101,7 +101,7 @@
     "numberOfInstances": 2,
     "frontEndIPConfigID": "[concat(variables('lbID'),'/frontendIPConfigurations/loadBalancerFrontend')]",
     "storageAccountName": "[uniqueString(resourceGroup().id)]",
-    "dnsNameforLBIP": "[uniqueString(resourceGroup().id)]"
+    "dnsNameforLBIP": "[concat('l11lb',uniqueString(resourceGroup().id))]"
   },
   "resources": [
     {
