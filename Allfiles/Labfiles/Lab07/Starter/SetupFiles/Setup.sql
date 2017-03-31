@@ -32,7 +32,7 @@ FROM N'D:\Labfiles\Lab07\Starter\SetupFiles\CustomerData.txt'
 WITH 
       (
          FIELDTERMINATOR =',',
-         ROWTERMINATOR ='\n'
+         ROWTERMINATOR ='0x0a'
       );
 GO
 
