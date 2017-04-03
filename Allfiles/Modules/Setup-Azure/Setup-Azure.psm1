@@ -55,7 +55,7 @@
         1 { }
         2 { Add-AzureAccount | Out-Null; Show-Subscription; Choose-Location; Create-Names $labnumber; Create-Storage $storeName $location; Create-VirtualNetwork $labnumber; Create-VM "ClassicSrv1" $svcName "Server" $location $labnumber 1 "ADATUM-BRANCH-VNET"}
         3 { Add-AzureRmAccount | Out-Null; Show-SubscriptionARM; Choose-LocationARM; Create-VNetARM "20533C0301-LabRG" "HQ-VNET" "192.168.0.0/16" @("App","Database","Web") @("192.168.1.0/24","192.168.2.0/24","192.168.3.0/24")}
-        4 { }
+        4 { Add-AzureRmAccount | Out-Null; Show-SubscriptionARM }
         5 { }
         6 { Add-AzureRmAccount | Out-Null; Show-SubscriptionARM; Choose-LocationARM; D:\Labfiles\Lab06\Starter\Setup-20533C06Lab.ps1 $location}
         7 { Create-SQLDB }
