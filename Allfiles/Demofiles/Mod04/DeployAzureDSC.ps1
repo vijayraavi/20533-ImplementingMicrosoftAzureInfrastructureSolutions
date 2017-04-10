@@ -3,9 +3,9 @@ Login-AzureRmAccount
 Show-SubscriptionARM
 
 $resourceGroupName = '20533C0401-DemoRG'
-$saPrefix = 'sa20533c04'
+$saPrefix = 'sa20533c04d'
 $saType = 'Standard_LRS'
-$maxValue = 99999
+$maxValue = 999999
 
 $randomNumber = Get-Random -Minimum 0 -Maximum $maxValue
 $saName = $saPrefix + $randomNumber
