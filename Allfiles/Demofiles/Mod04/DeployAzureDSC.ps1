@@ -5,22 +5,21 @@ Show-SubscriptionARM
 $resourceGroupName = '20533C0401-DemoRG'
 $saPrefix = 'sa20533c04d'
 $saType = 'Standard_LRS'
-$maxValue = 999999
-
-$randomNumber = Get-Random -Minimum 0 -Maximum $maxValue
-$saName = $saPrefix + $randomNumber
-
-$try = Get-AzureRmStorageAccountNameAvailability -Name $saName
-If ($try1.NameAvailable -ne $True) {
-	Do {
-		$randomNumber = Get-Random -Minimum 0 -Maximum $maxValue
-		$saName = $saPrefix + $randomnumber
-		$try = Get-AzureRmStorageAccountNameAvailability -Name $saName
-	}
-	Until ($try.NameAvailable -eq $True)
-}
 
 $resourceGroup = Get-AzureRmResourceGroup -Name $resourceGroupName
+
+$storageAccount = Get-AzureRmStorageAccount -ResourceGroupName $resourceGroupName
+If (!($storageAccount)) {
+    $uniqueNumber = (Get-Date).Ticks.ToString().Substring(8)
+    $saName = $saPrefix + $uniqueNumber 
+    If ((Get-AzureRmStorageAccountNameAvailability -Name $saName).NameAvailable -ne $True) { 
+        Do { 
+            $uniqueNumber = (Get-Date).Ticks.ToString().Substring(8)
+            $saName = $saPrefix + $uniqueNumber
+        } Until ((Get-AzureRmStorageAccountNameAvailability -Name $saName).NameAvailable -eq $True)
+    } 
+    New-AzureRmStorageAccount -ResourceGroupName $resourceGroupname -Name $saName -Type $saType -Location $resourceGroup.Location
+}
 
 $storageAccount = New-AzureRmStorageAccount -ResourceGroupName $resourceGroupName -Name $saName -Type $saType -Location $resourceGroup.Location
 $storageAccountKey = (Get-AzureRmStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccount.StorageAccountName)[0].Value
