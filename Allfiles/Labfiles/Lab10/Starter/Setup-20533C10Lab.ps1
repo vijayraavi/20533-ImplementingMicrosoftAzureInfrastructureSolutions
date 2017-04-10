@@ -1,37 +1,34 @@
-﻿Param(
+Param(
   [Parameter(Mandatory=$true,Position=1)]
     [String]$location
 )
 
-Set-Location -Path 'D:\Labfiles\Lab10\Starter'
-
-$ResourceGroupLocation = $location
 $resourceGroupName = '20533C1001-LabRG'
+$resourceGroupLocation = $location
 
-$resourceGroup = New-AzureRmResourceGroup -Name $resourceGroupName -Location $ResourceGroupLocation
+$resourceGroup = New-AzureRmResourceGroup -Name $resourceGroupName -Location $resourceGroupLocation
 
-$templateFile = '.\Templates\azuredeploy.json'
-$templateParametersFile = '.\Templates\azuredeploy.parameters.json'
-$StorageContainerName = $ResourceGroupName.ToLowerInvariant() + '-stageartifacts'
-$ArtifactStagingDirectory = '.\bin\Debug\staging'
-$AzCopyPath = '.\AzCopy\AzCopy.exe'
-$DSCSourceFolder = '.\DSC'
+$templateFilePath = 'Templates\azuredeploy.json'
+$templateParametersFilePath = 'Templates\azuredeploy.parameters.json'
+$ArtifactStagingDirectoryPath = 'bin\Debug\staging'
+$DSCSourceFolderPath = 'DSC'
+$nestedTemplatesPath = 'nestedtemplates'
 
-$OptionalParameters = New-Object -TypeName Hashtable
-$TemplateFile = [System.IO.Path]::Combine($PSScriptRoot, $TemplateFile)
-$TemplateParametersFile = [System.IO.Path]::Combine($PSScriptRoot, $TemplateParametersFile)
-$UploadArtifacts = $true
+$storageContainerName = $ResourceGroupName.ToLowerInvariant() + '-stageartifacts'
+$templateFile = [System.IO.Path]::Combine($PSScriptRoot, $templateFilePath)
+$templateParametersFile = [System.IO.Path]::Combine($PSScriptRoot, $templateParametersFilePath)
 
-if ($UploadArtifacts) {
+$ptionalParameters = New-Object -TypeName Hashtable
+$uploadArtifacts = $true
+
+if ($uploadArtifacts) {
     # Convert relative paths to absolute paths if needed
-    $ArtifactStagingDirectory = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $ArtifactStagingDirectory))
-    $DSCSourceFolder = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $DSCSourceFolder))
-
-    $ArtifactStagingDirectory = 'D:\Labfiles\Lab10\Starter\bin\Debug\Staging'
-    $DSCSourceFolder = 'D:\Labfiles\Lab10\Starter\DSC'
+    $ArtifactStagingDirectory = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $ArtifactStagingDirectoryPath))
+    $DSCSourceFolder = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $DSCSourceFolderPath))
+    $nestedTemplatesFolder = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PSScriptRoot, $nestedTemplatesPath))
 
     # Parse the parameter file and update the values of artifacts location and artifacts location SAS token if they are present
-    $JsonParameters = Get-Content $TemplateParametersFile -Raw | ConvertFrom-Json
+    $JsonParameters = Get-Content $templateParametersFile -Raw | ConvertFrom-Json
     if (($JsonParameters | Get-Member -Type NoteProperty 'parameters') -ne $null) {
         $JsonParameters = $JsonParameters.parameters
     }
@@ -58,9 +55,7 @@ if ($UploadArtifacts) {
 
     # Create the storage account if it doesn't already exist
     if ($StorageAccount -eq $null) {
-        $StorageResourceGroupName = $resourceGroupName
-        #New-AzureRmResourceGroup -Location "$ResourceGroupLocation" -Name $StorageResourceGroupName -Force
-        $StorageAccount = New-AzureRmStorageAccount -StorageAccountName $StorageAccountName -Type 'Standard_LRS' -ResourceGroupName $StorageResourceGroupName -Location "$ResourceGroupLocation"
+        $StorageAccount = New-AzureRmStorageAccount -StorageAccountName $StorageAccountName -Type 'Standard_LRS' -ResourceGroupName $resourceGroupName -Location $resourceGroupLocation
     }
 
     # Generate the value for artifacts location if it is not provided in the parameter file
@@ -71,18 +66,18 @@ if ($UploadArtifacts) {
     # Copy files from the local storage staging location to the storage account container
     New-AzureStorageContainer -Name $StorageContainerName -Context $StorageAccount.Context -ErrorAction SilentlyContinue *>&1
 
-    $ArtifactStagingDirectory = 'D:\Labfiles\Lab10\Starter\DSC'
+    $ArtifactStagingDirectory = $DSCSourceFolder
     $ArtifactFilePaths = Get-ChildItem $ArtifactStagingDirectory -Recurse -File | ForEach-Object -Process {$_.FullName}
     foreach ($SourcePath in $ArtifactFilePaths) {
-        $blobString = ’DSC\‘ + $SourcePath.Substring($ArtifactStagingDirectory.length + 1)
+        $blobString = "$DSCSourceFolderPath" + '\' + $SourcePath.Substring($ArtifactStagingDirectory.length + 1)
         Set-AzureStorageBlobContent -File $SourcePath -Blob $blobString `
             -Container $StorageContainerName -Context $StorageAccount.Context -Force
     }
 
-    $ArtifactStagingDirectory = 'D:\Labfiles\Lab10\Starter\nestedtemplates'
+    $ArtifactStagingDirectory = $nestedTemplatesFolder
     $ArtifactFilePaths = Get-ChildItem $ArtifactStagingDirectory -Recurse -File | ForEach-Object -Process {$_.FullName}
     foreach ($SourcePath in $ArtifactFilePaths) {
-        $blobString = ’nestedtemplates\‘ + $SourcePath.Substring($ArtifactStagingDirectory.length + 1)
+        $blobString = "$nestedTemplatesPath" + '\' + $SourcePath.Substring($ArtifactStagingDirectory.length + 1)
         Set-AzureStorageBlobContent -File $SourcePath -Blob $blobString `
             -Container $StorageContainerName -Context $StorageAccount.Context -Force
     }
@@ -96,7 +91,7 @@ if ($UploadArtifacts) {
 }
 
 # Create or update the resource group using the specified template file and template parameters file
-New-AzureRmResourceGroup -Name $ResourceGroupName -Location $ResourceGroupLocation -Verbose -Force
+New-AzureRmResourceGroup -Name $ResourceGroupName -Location $resourceGroupLocation -Verbose -Force
 
 if ($ValidateOnly) {
     $ErrorMessages = Format-ValidationOutput (Test-AzureRmResourceGroupDeployment -ResourceGroupName $ResourceGroupName `
