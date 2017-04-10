@@ -3,7 +3,7 @@ Login-AzureRmAccount
 Show-SubscriptionARM
 
 $resourceGroupName = '20533C0401-LabRG'
-$saPrefix = '20533c04'
+$saPrefix = 'sa20533c04l'
 $saType = 'Standard_LRS'
 
 $storageAccount = Get-AzureRmStorageAccount -ResourceGroupName $resourceGroupName
