@@ -18,7 +18,7 @@ $storageContainerName = $ResourceGroupName.ToLowerInvariant() + '-stageartifacts
 $templateFile = [System.IO.Path]::Combine($PSScriptRoot, $templateFilePath)
 $templateParametersFile = [System.IO.Path]::Combine($PSScriptRoot, $templateParametersFilePath)
 
-$ptionalParameters = New-Object -TypeName Hashtable
+$optionalParameters = New-Object -TypeName Hashtable
 $uploadArtifacts = $true
 
 if ($uploadArtifacts) {
