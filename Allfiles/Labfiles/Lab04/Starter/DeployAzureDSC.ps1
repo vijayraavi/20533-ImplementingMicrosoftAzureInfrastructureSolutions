@@ -18,10 +18,9 @@ If (!($storageAccount)) {
             $saName = $saPrefix + $uniqueNumber
         } Until ((Get-AzureRmStorageAccountNameAvailability -Name $saName).NameAvailable -eq $True)
     } 
-    New-AzureRmStorageAccount -ResourceGroupName $resourceGroupname -Name $saName -Type $saType -Location $resourceGroup.Location
+    $storageAccount = New-AzureRmStorageAccount -ResourceGroupName $resourceGroupname -Name $saName -Type $saType -Location $resourceGroup.Location
 }
 
-$storageAccount = New-AzureRmStorageAccount -ResourceGroupName $resourceGroupName -Name $saName -Type $saType -Location $resourceGroup.Location
 $storageAccountKey = (Get-AzureRmStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccount.StorageAccountName)[0].Value
 
 # we are using default container 
