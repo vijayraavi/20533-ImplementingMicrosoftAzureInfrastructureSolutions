@@ -2,24 +2,24 @@
 
 Cloud services, such as Microsoft Azure, are updated frequently. This leads to issues for Microsoft Certified Trainers (MCTs) when they teach courses, such as _20532: Developing Microsoft Azure Solutions_ or _20533: Implementing Microsoft Azure Infrastructure Solutions_, because lab steps change frequently as the service changes. Due to the frequency of the changes and the fact that there may not be any notification when changes occur, it can be difficult for the course development team to rapidly identify and address any lab changes.
 
-To address these issues, we are using GitHub to publish the lab steps and lab scripts for courses that cover cloud services like Azure. Using GitHub allows for collaboration between the courseís authors and MCTs to keep the content current with Azure platform changes. Using GitHub allows the MCTs to provide feedback and suggestions for lab changes, and then the course authors can update lab steps and scripts quickly and relatively easily.
+To address these issues, we are using GitHub to publish the lab steps and lab scripts for courses that cover cloud services like Azure. Using GitHub allows for collaboration between the course‚Äôs authors and MCTs to keep the content current with Azure platform changes. Using GitHub allows the MCTs to provide feedback and suggestions for lab changes, and then the course authors can update lab steps and scripts quickly and relatively easily.
 
 When you prepare to teach these courses, you should ensure that you are using the latest lab steps and scripts by downloading the appropriate files from GitHub.
 
-This user guide is for MCTs who are new to GitHub, and it provides steps for connecting to GitHub, downloading and printing course materials, updating the scripts that students use in labs, and explaining how you can help ensure that this courseís content remains current.
+This user guide is for MCTs who are new to GitHub, and it provides steps for connecting to GitHub, downloading and printing course materials, updating the scripts that students use in labs, and explaining how you can help ensure that this course‚Äôs content remains current.
 
 ### GitHub terminology
-GitHub introduces terminology that might be new to you, and the following list includes terms and concepts that this document uses. However, for a full list of GitHub terms, refer to the ìGitHub Glossaryî at <https://help.github.com/articles/GitHub-glossary/>.
+GitHub introduces terminology that might be new to you, and the following list includes terms and concepts that this document uses. However, for a full list of GitHub terms, refer to the ‚ÄúGitHub Glossary‚Äù at <https://help.github.com/articles/GitHub-glossary/>.
 
 - _Git_ and _GitHub_: _Git_ is an open-source, change-tracking program, and _GitHub_ is a site/solution built on Git. There are other websites and solutions that use Git as their backend. You would use GitHub primarily for open-source (public) development projects, and it is free for those projects. However, if you want to use GitHub for projects that are private, and not open source, you must sign up for a paid version.
 
-- _Repo_ or _Repository_: Each project in GitHub is in a repository, or _repo_. A repo contains all of a projectís files, including documentation, and it supports revision history. A repository can be public or private, and you can have a local copy of the repo on your computer hard drive, or you can use the repo within GitHub.
+- _Repo_ or _Repository_: Each project in GitHub is in a repository, or _repo_. A repo contains all of a project‚Äôs files, including documentation, and it supports revision history. A repository can be public or private, and you can have a local copy of the repo on your computer hard drive, or you can use the repo within GitHub.
 
 - _Markdown_: This is a text-file format that you can use for creating documentation. It is text-based and very simple to update, which makes it easy to use during collaboration. GitHub then renders it as HTML.
 
-- _GitHub flavored markdown (GFM)_: There are many variations, or flavors, of the Markdown file format. The GitHub version, commonly referred to as _GFM_, is one of the most common variations of Markdown. For more information about GFM and how you can use the Markup format for your GFM documents, refer to ìGetting started with writing and formatting on GitHubî at https://help.github.com/articles/getting-started-with-writing-and-formatting-on-github/.
+- _GitHub flavored markdown (GFM)_: There are many variations, or flavors, of the Markdown file format. The GitHub version, commonly referred to as _GFM_, is one of the most common variations of Markdown. For more information about GFM and how you can use the Markup format for your GFM documents, refer to ‚ÄúGetting started with writing and formatting on GitHub‚Äù at https://help.github.com/articles/getting-started-with-writing-and-formatting-on-github/.
 
-- _Fork_: This is a copy of another repo that resides in your GitHub account, in comparison to a _branch_, which lives in the original repo. See ìBranchî directly below.
+- _Fork_: This is a copy of another repo that resides in your GitHub account, in comparison to a _branch_, which lives in the original repo. See ‚ÄúBranch‚Äù directly below.
 
 - _Branch_: This is a copy of a repository that resides in the same repository as the original. You can merge a branch with the original.
 
@@ -27,13 +27,13 @@ GitHub introduces terminology that might be new to you, and the following list i
 
 - _Pull_: This is the process of fetching the latest changes from an online repo and merging them with local changes.
 
-- _Merge_: This is the process of fetching changes from one branch and applying them to another. This includes retrieving changes from an online repo, and then applying them to that repoís local version.
+- _Merge_: This is the process of fetching changes from one branch and applying them to another. This includes retrieving changes from an online repo, and then applying them to that repo‚Äôs local version.
 
-- _Pull request_: This is a set of proposed changes to a repo that a user submit, and a repoís owners or collaborators then can accept or reject the pull request.
+- _Pull request_: This is a set of proposed changes to a repo that a user submit, and a repo‚Äôs owners or collaborators then can accept or reject the pull request.
 
 - _Push_: This is the process of sending or submitting your local changes to the online repo.
 
-- _Collaborator_: This is a GitHub user that has permissions to add, delete, or change a repoís content.
+- _Collaborator_: This is a GitHub user that has permissions to add, delete, or change a repo‚Äôs content.
 
 ## Overview of Microsoft Learning's GitHub solution for course labs
 
@@ -52,7 +52,7 @@ Once you sign up for GitHub and install the prerequisite software, the steps for
 
 You can use a variety of tools that support Git with GitHub, including Microsoft Visual Studio, Visual Studio Code, or any of the Git command-line tools that are available online.
 
-> **Note:** GitHub has a desktop client and a command-line interface. Throughout this document, we use the desktop client. If GitHub and Git are new concepts, and you would like a more in-depth introduction, refer to the ìGitHub [Hello World](https://guides.github.com/activities/hello-world/) guideî at <https://guides.github.com/activities/hello-world/> .
+> **Note:** GitHub has a desktop client and a command-line interface. Throughout this document, we use the desktop client. If GitHub and Git are new concepts, and you would like a more in-depth introduction, refer to the ‚ÄúGitHub [Hello World](https://guides.github.com/activities/hello-world/) guide‚Äù at <https://guides.github.com/activities/hello-world/> .
 
 ## Prerequisites  ##
 The following section details the prerequisites for using GitHub and the Microsoft Learning courseware lab solution.
@@ -144,6 +144,10 @@ The labs are stored on GitHub in a repo. The structure for each Microsoft Learni
 
 You need all of these folders if you want to print the lab files.
 
+>**Note:** After you download the latest lab files from GitHub and copy them to the student computers, ensure that the student computer is restarted before students start the labs. This ensures that any PowerShell modules that have previously been run will be replaced in memory by the latest versions. In addition, since the scripts on GitHub are not codesigned, students need to run the following command to ensure that the scripts will run:
+Set-ExecutionPolicy ‚ÄìExecutionPolicy Bypass ‚ÄìForce
+This command should be run at the beginning of the class, and applied to the VM image if possible.
+
 ### Downloading the latest materials for course labs
 
 If you want to build Word documents from Markdown files, you must clone, or fetch, a copy of the repo on your local computer. If you want to clone the files, you must know the GitHub location of the course files. You can use the **Search GitHub** search box on the GitHub home page to search for these files by using the course number. You also can browse through the repos under the [Microsoft Learning organization](https://github.com/MicrosoftLearning) page on GitHub. The Microsoft Learning page on GitHub is located at <https://github.com/MicrosoftLearning/>.
@@ -173,7 +177,7 @@ After you clone a repo the first time, on subsequent visits, you can open GitHub
 
 ### Printing the lab and LAK files
 
-If you want to print lab and LAK files, you must convert them Word documents first. Microsoft Learning has a Windows PowerShell script that automates this task. The script creates the Word documents, and then packages the Word documents into .zip files. At the same time, it creates a .zip file that contains the labís supporting files such as scripts and text files, which you will need when you set up your lab environment.
+If you want to print lab and LAK files, you must convert them Word documents first. Microsoft Learning has a Windows PowerShell script that automates this task. The script creates the Word documents, and then packages the Word documents into .zip files. At the same time, it creates a .zip file that contains the lab‚Äôs supporting files such as scripts and text files, which you will need when you set up your lab environment.
 
 The Windows PowerShell script, Pandoc.ps1, is in the **\\Build** folder. The folder also contains template.docx, which the script uses to format files in Word. Do not alter the template.docx file.
 
@@ -209,7 +213,7 @@ You can receive notifications whenever there are updates to a Github repo. You h
 
 - _Pull request_: When you create a pull request, and propose that the owners of a repo accept a change that you make, you automatically subscribe to receive notifications for the related discussion about the pull request. In order to create a Pull request you must first create a branch.
 
-- _Comments_: When you make comments about another personís pull request, GitHub subscribes you automatically to the forum that pertains to that comment, or you can subscribe to the forum manually.
+- _Comments_: When you make comments about another person‚Äôs pull request, GitHub subscribes you automatically to the forum that pertains to that comment, or you can subscribe to the forum manually.
 
 - _Issues_: An issue is a suggestion, question, or request that pertains to a repository. Each issue has its own discussion, and you can subscribe to issues, or GitHub subscribes you automatically to issues that you create.
 
@@ -354,7 +358,7 @@ You can also make suggestions about an overall project, by submitting an Issue o
 
 4. Click **Comment**.
 
-Whenever you create an issue, or a comment on a pull request or commit, you also can include other GitHub users or teams into the conversation by performing a **mention** of them in the commentís body. If you are familiar with Twitter, this feature will look very familiar.
+Whenever you create an issue, or a comment on a pull request or commit, you also can include other GitHub users or teams into the conversation by performing a **mention** of them in the comment‚Äôs body. If you are familiar with Twitter, this feature will look very familiar.
 
 #### To mention a Github user in a comment:
 
@@ -362,4 +366,4 @@ Whenever you create an issue, or a comment on a pull request or commit, you also
 
 2. Create your comment or issue as described previously, and in the comment text box, type **@**, followed by the user or team name, within the comment.
 
-  > **Note:** When you type the **@** symbol, a list appears that contains GitHub users who are collaborators on the applicable project and anyone who is participating in the projectís comments. The list uses autocomplete as you type, so that you can filter the list easily.
+  > **Note:** When you type the **@** symbol, a list appears that contains GitHub users who are collaborators on the applicable project and anyone who is participating in the project‚Äôs comments. The list uses autocomplete as you type, so that you can filter the list easily.
