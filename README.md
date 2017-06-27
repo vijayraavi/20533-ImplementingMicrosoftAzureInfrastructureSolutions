@@ -1,4 +1,4 @@
-# 20533-ImplementingMicrosoftAzureInfrastructureSolutions
+# 20533C: Implementing Microsoft Azure Infrastructure Solutions
 
 ## What are we doing?
 
