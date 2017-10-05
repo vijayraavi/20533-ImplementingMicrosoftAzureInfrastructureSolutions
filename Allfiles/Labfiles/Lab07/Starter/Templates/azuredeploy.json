@@ -1,0 +1,195 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUsername": {
+      "type": "string",
+      "defaultValue": "Student",
+      "metadata": {
+        "description": "The name of the administrator account of the new VM and domain"
+      }
+    },
+    "adminPassword": {
+      "type": "string",
+      "defaultValue": "Pa55w.rd1234",
+      "metadata": {
+        "description": "The password for the administrator account of the new VM and domain"
+      }
+    },
+    "windowsserver":{
+      "type": "string",
+       "metadata": {
+        "description": "The version of Windows Server"
+      },
+      "defaultValue": "2016-Datacenter",
+      "allowedValues": [
+        "2016-Datacenter"
+      ]
+    },
+    "_artifactsLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "The location of resources, such as templates and DSC modules, that the template depends on"
+      }
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Auto-generated token to access _artifactsLocation"
+      },
+      "defaultValue": ""
+    }
+  },
+  "variables": {
+    "virtualNetworkName": "20533D0701-vnet",
+    "virtualNetworkAddressRange": "10.0.0.0/22",
+    "storageAccountName": "[concat('docker', uniquestring(resourceGroup().id))]",
+    "dockerRDPNAT": "default-allow-rdp",
+    "dockerNicName": "20533D0701-nic",
+    "dockerVMName": "20533D0701-vm0",
+    "dockerSubnetName": "subnet-0",
+    "dockerSubnetAddressPrefix": "10.0.0.0/24",
+    "publicIPAddressName": "20533D0701-pip"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('storageAccountName')]",
+      "apiVersion": "2017-06-01",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "kind": "Storage",
+      "properties": {}
+    },
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('publicIPAddressName')]",
+      "apiVersion": "2017-06-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+         "publicIPAllocationMethod": "Dynamic"
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[variables('virtualNetworkName')]",
+      "apiVersion": "2017-06-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+         "addressSpace": {
+             "addressPrefixes": [
+                 "10.0.0.0/22"
+             ]
+         },
+         "subnets": [
+             {
+                "name": "[variables('dockerSubnetName')]",
+                "properties": {
+                    "addressPrefix": "10.0.0.0/24"
+                }
+             }
+          ]
+       }
+    },
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('dockerNicName')]",
+      "apiVersion": "2017-06-01",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName'))]"
+              },
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('dockerSubnetName'))]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[variables('dockerVMName')]",
+      "apiVersion": "2017-03-30",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+        "[resourceId('Microsoft.Network/networkInterfaces', variables('dockerNicName'))]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "Standard_D2_v3"
+        },
+        "osProfile": {
+          "computerName": "[variables('dockerVMName')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]",
+          "windowsConfiguration": {
+            "provisionVmAgent": "true"
+          }
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "MicrosoftWindowsServer",
+            "offer": "WindowsServer",
+            "sku": "[parameters('windowsserver')]",
+            "version": "latest"
+          },
+          "osDisk": {
+            "createOption": "FromImage"
+          },
+          "dataDisks": []
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('dockerNicName'))]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": true,
+            "storageUri": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2017-06-01').primaryEndpoints['blob']]"
+          }
+        }
+      },
+      "resources": [
+        {
+          "type": "extensions",
+          "name": "InstallHyperV",
+          "apiVersion": "2015-06-15",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+            "[resourceId('Microsoft.Compute/virtualMachines', variables('dockerVMName'))]"
+          ],
+          "properties": {
+            "publisher": "Microsoft.Powershell",
+            "type": "DSC",
+            "typeHandlerVersion": "2.26",
+            "autoUpgradeMinorVersion": true,
+            "settings": {
+              "ModulesUrl": "[concat(parameters('_artifactsLocation'), '/DSC/InstallHyperV.zip', parameters('_artifactsLocationSasToken'))]",
+              "ConfigurationFunction": "InstallHyperV.ps1\\InstallHyperV",
+              "Properties": {
+              }
+            },
+            "protectedSettings": {
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
