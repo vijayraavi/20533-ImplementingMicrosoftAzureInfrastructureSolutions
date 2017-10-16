@@ -252,6 +252,8 @@
             "location": "[resourceGroup().location]",
             "comments": "Primary NIC",
             "dependsOn": [
+                "[variables('publicIPAddress2Name')]",
+                "[variables('networkSecurityGroup2Name')]",
                 "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
             ],
             "properties": {
