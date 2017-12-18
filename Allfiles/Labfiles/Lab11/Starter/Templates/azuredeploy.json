@@ -74,10 +74,6 @@
     },
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_D1_v2",
-      "allowedValues": [
-        "Standard_D1_v2"
-      ],
       "metadata": {
         "description": "VM Size"
       }
