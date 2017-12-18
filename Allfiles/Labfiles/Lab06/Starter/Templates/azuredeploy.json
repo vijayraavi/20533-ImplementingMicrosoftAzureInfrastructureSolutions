@@ -26,6 +26,12 @@
         "description": "The Windows version for the VM."
       }
     }
+    "vmSize": {
+      "type": "string",
+      "metadata": {
+        "description": "This is the allowed list of VM sizes"
+      }
+    }
   },
   "variables": {
     "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'sawinvm')]",
@@ -125,7 +131,7 @@
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "Standard_D1_v2"
+          "vmSize": "[parameters('vmSize')]" 
         },
         "osProfile": {
           "computerName": "[variables('vmName')]",
