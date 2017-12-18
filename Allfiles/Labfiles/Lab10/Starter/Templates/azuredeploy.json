@@ -45,6 +45,12 @@
         "description": "Auto-generated token to access _artifactsLocation"
       },
       "defaultValue": ""
+    },
+    "vmSize": {
+      "type": "string",
+      "metadata": {
+        "description": "This is the allowed list of VM sizes"
+      }
     }
   },
   "variables": {
@@ -214,7 +220,7 @@
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "Standard_D2_v2"
+          "vmSize": "[parameters('vmSize')]"
         },
         "availabilitySet": {
           "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('adAvailabilitySetName'))]"
