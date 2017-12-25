@@ -38,6 +38,12 @@
         "description": "Auto-generated token to access _artifactsLocation"
       },
       "defaultValue": ""
+    },
+     "vmSize": {
+      "type": "string",
+      "metadata": {
+        "description": "VM size"
+      }
     }
   },
   "variables": {
@@ -130,7 +136,7 @@
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "Standard_D2_v3"
+          "vmSize": "[parameters('vmSize')]"
         },
         "osProfile": {
           "computerName": "[variables('dockerVMName')]",
