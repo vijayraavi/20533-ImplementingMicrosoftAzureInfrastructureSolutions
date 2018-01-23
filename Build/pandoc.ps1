@@ -55,8 +55,11 @@ foreach($file in Get-ChildItem $docsInputDirectory | Where-Object {$_.Extension 
 ' Copy AllFiles '
 Copy-Item $filesInputDirectory –Destination $outputDirectory -Recurse -Container
 
-' Compress AllFiles & Lab Instructions '
-ZipFiles $filesOutputDirectory $docsOutputDirectory $version
+try {
+    ' Compress AllFiles & Lab Instructions '
+    ZipFiles $filesOutputDirectory $docsOutputDirectory $version
 
-' Remove Temp Directory'
-Remove-Item $outputDirectory -Force -Recurse
+    ' Remove Temp Directory'
+    Remove-Item $outputDirectory -Force -Recurse
+} catch {
+}
