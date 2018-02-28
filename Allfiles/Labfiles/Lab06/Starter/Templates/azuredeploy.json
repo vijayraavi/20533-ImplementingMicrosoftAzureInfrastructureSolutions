@@ -20,35 +20,37 @@
       "type": "string",
       "defaultValue": "2016-Datacenter",
       "allowedValues": [
-        "2008-R2-SP1",
-        "2012-Datacenter",
-        "2012-R2-Datacenter",
-        "2016-Nano-Server",
-        "2016-Datacenter-with-Containers",
         "2016-Datacenter"
       ],
       "metadata": {
-        "description": "The Windows version for the VM. This will pick a fully patched image of this given Windows version."
+        "description": "The Windows version for the VM."
+      }
+    },
+    "vmSize": {
+      "type": "string",
+      "metadata": {
+        "description": "This is the allowed list of VM sizes"
       }
     }
   },
   "variables": {
     "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'sawinvm')]",
-    "nicName": "myVMNic",
+    "nicName": "20533D0601-nic",
     "addressPrefix": "10.0.0.0/16",
-    "subnetName": "Subnet",
+    "subnetName": "subnet-0",
     "subnetPrefix": "10.0.0.0/24",
-    "publicIPAddressName": "myPublicIP",
-    "vmName": "AdatumSvr06",
-    "virtualNetworkName": "MyVNET",
+    "publicIPAddressName": "20533D0601-pip",
+    "vmName": "20533D0601-vm1",
+    "virtualNetworkName": "20533D0601-vnet",
     "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]",
-    "dnsLabelPrefix": "[concat('dns', uniquestring(resourceGroup().id))]"
+    "dnsLabelPrefix": "[concat('dns', uniquestring(resourceGroup().id))]",
+    "networkSecurityGroupName": "20533D0601-nsg"
   },
   "resources": [
     {
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[variables('storageAccountName')]",
-      "apiVersion": "2016-01-01",
+      "apiVersion": "2017-06-01",
       "location": "[resourceGroup().location]",
       "sku": {
         "name": "Standard_LRS"
@@ -57,7 +59,7 @@
       "properties": {}
     },
     {
-      "apiVersion": "2016-03-30",
+      "apiVersion": "2017-06-01",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIPAddressName')]",
       "location": "[resourceGroup().location]",
@@ -69,7 +71,7 @@
       }
     },
     {
-      "apiVersion": "2016-03-30",
+      "apiVersion": "2017-06-01",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('virtualNetworkName')]",
       "location": "[resourceGroup().location]",
@@ -90,7 +92,7 @@
       }
     },
     {
-      "apiVersion": "2016-03-30",
+      "apiVersion": "2017-06-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('nicName')]",
       "location": "[resourceGroup().location]",
@@ -112,11 +114,14 @@
               }
             }
           }
-        ]
+        ],
+        "networkSecurityGroup": {
+           "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]"
+        }
       }
     },
     {
-      "apiVersion": "2016-04-30-preview",
+      "apiVersion": "2017-03-30",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('vmName')]",
       "location": "[resourceGroup().location]",
@@ -126,7 +131,7 @@
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "Standard_A2"
+          "vmSize": "[parameters('vmSize')]" 
         },
         "osProfile": {
           "computerName": "[variables('vmName')]",
@@ -145,7 +150,7 @@
           },
           "dataDisks": [
             {
-              "diskSizeGB": "1023",
+              "diskSizeGB": "128",
               "lun": 0,
               "createOption": "Empty"
             }
@@ -165,7 +170,31 @@
           }
         }
       }
-    }
+    },
+    {
+      "name": "[variables('networkSecurityGroupName')]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2016-09-01",
+      "location": "[resourceGroup().location]",
+      "comments": "Network Security Group (NSG) for Primary NIC",
+      "properties": {
+          "securityRules": [
+              {
+                 "name": "default-allow-rdp",
+                 "properties": {
+                    "priority": 1000,
+                    "sourceAddressPrefix": "*",
+                    "protocol": "Tcp",
+                    "destinationPortRange": "3389",
+                    "access": "Allow",
+                    "direction": "Inbound",
+                    "sourcePortRange": "*",
+                    "destinationAddressPrefix": "*"
+                 }
+              }
+           ]
+        }
+     }
   ],
   "outputs": {
     "hostname": {
@@ -174,4 +203,3 @@
     }
   }
 }
-

@@ -18,35 +18,35 @@
     },
     "vmNamePrefix": {
       "type": "string",
-      "defaultValue": "myVM",
+      "defaultValue": "20533D1101-vm",
       "metadata": {
         "description": "VM name prefix"
       }
     },
     "lbName": {
       "type": "string",
-      "defaultValue": "myLB",
+      "defaultValue": "20533D1101-ilb",
       "metadata": {
         "description": "Load Balancer name"
       }
     },
     "nicNamePrefix": {
       "type": "string",
-      "defaultValue": "nic",
+      "defaultValue": "20533D1101-nic",
       "metadata": {
         "description": "Network Interface Name Prefix"
       }
     },
     "publicIPAddressName": {
       "type": "string",
-      "defaultValue": "myPublicIP",
+      "defaultValue": "20533D1101-pip",
       "metadata": {
         "description": "Public IP Address Name"
       }
     },
     "vnetName": {
       "type": "string",
-      "defaultValue": "myVNET",
+      "defaultValue": "20533D1101-vnet",
       "metadata": {
         "description": "VNET name"
       }
@@ -74,14 +74,6 @@
     },
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_A1",
-      "allowedValues": [
-        "Standard_A0",
-        "Standard_A1",
-        "Standard_A2",
-        "Standard_A3",
-        "Standard_A4"
-      ],
       "metadata": {
         "description": "VM Size"
       }
@@ -89,9 +81,9 @@
   },
   "variables": {
     "storageAccountType": "Standard_LRS",
-    "availabilitySetName": "myAvSet",
-    "addressPrefix": "10.0.0.0/16",
-    "subnetName": "Subnet-1",
+    "availabilitySetName": "20533D1101-avset",
+    "addressPrefix": "10.0.0.0/22",
+    "subnetName": "subnet-0",
     "subnetPrefix": "10.0.0.0/24",
     "publicIPAddressType": "Dynamic",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('vnetName'))]",
@@ -107,25 +99,29 @@
     {
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[variables('storageAccountName')]",
-      "apiVersion": "2015-05-01-preview",
+      "apiVersion": "2017-06-01",
       "location": "[resourceGroup().location]",
-      "properties": {
-        "accountType": "[variables('storageAccountType')]"
-      }
+      "sku": {
+            "name": "Standard_LRS"
+      },
+      "kind": "Storage",
+      "properties": {}
     },
     {
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('availabilitySetName')]",
-      "apiVersion": "2016-04-30-preview",
+      "apiVersion": "2017-03-30",
       "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Aligned"
+      },
 	"properties": {
 	    "platformFaultDomainCount": "2",
-	    "platformUpdateDomainCount": "2",
-	    "managed" : "true"
+	    "platformUpdateDomainCount": "5"
 	}
     },
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-06-01",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[parameters('publicIPAddressName')]",
       "location": "[resourceGroup().location]",
@@ -137,7 +133,7 @@
       }
     },
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-06-01",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[parameters('vnetName')]",
       "location": "[resourceGroup().location]",
@@ -158,7 +154,7 @@
       }
     },
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-06-01",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[concat(parameters('nicNamePrefix'), copyindex())]",
       "location": "[resourceGroup().location]",
@@ -196,7 +192,7 @@
       }
     },
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-03-01",
       "name": "[parameters('lbName')]",
       "type": "Microsoft.Network/loadBalancers",
       "location": "[resourceGroup().location]",
@@ -222,7 +218,7 @@
       }
     },
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-03-01",
       "type": "Microsoft.Network/loadBalancers/inboundNatRules",
       "name": "[concat(parameters('lbName'), '/', 'RDP-VM', copyIndex())]",
       "location": "[resourceGroup().location]",
@@ -244,7 +240,7 @@
       }
     },
     {
-      "apiVersion": "2016-04-30-preview",
+      "apiVersion": "2017-03-30",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[concat(parameters('vmNamePrefix'), copyindex())]",
       "copy": {
@@ -297,4 +293,3 @@
     }
   ]
 }
-
