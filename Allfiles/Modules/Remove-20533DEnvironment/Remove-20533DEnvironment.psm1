@@ -20,7 +20,7 @@
 
     if (!($20533DlabNumberGlobal)) {
         Do {
-            Write-Host -NoNewline "Which lab environment do you wan to remove? Type a number from 1 - 11:   " -ForegroundColor Magenta
+            Write-Host -NoNewline "Which lab environment do you want to remove? Type a number from 1 - 11:   " -ForegroundColor Magenta
             $labNumber = Read-Host 
         } While ((1..11) -notcontains $labNumber)
 
@@ -67,14 +67,18 @@
 
     # Display time taken for script to complete
     $endTime = Get-Date
-    Write-Host "Started at $startTime" -ForegroundColor Magenta
+
+    Write-Host "Started at $startTime" -ForegroundColor Magenta
     Write-Host "Ended at $endTime" -ForegroundColor Yellow
     Write-Host
-    $elapsedTime = $endTime - $startTime
-    If ($elapsedTime.Hours -ne 0){
+
+    $elapsedTime = $endTime - $startTime
+
+    If ($elapsedTime.Hours -ne 0){
         Write-Host "Total elapsed time is $($elapsedTime.Hours) hours $($elapsedTime.Minutes) minutes" -ForegroundColor Green
     } else {
-        Write-Host "Total elapsed time is $($elapsedTime.Minutes) minutes" -ForegroundColor Green
+
+        Write-Host "Total elapsed time is $($elapsedTime.Minutes) minutes" -ForegroundColor Green
     }
 
     Remove-Variable -Name 20533DlabNumberGlobal -Scope Global -ErrorAction SilentlyContinue
