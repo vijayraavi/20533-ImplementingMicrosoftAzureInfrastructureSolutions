@@ -9,10 +9,11 @@ Function Add-20533DEnvironment
         Break
     }
 
-    Get-ChildItem -Path 'E:\' -Recurse -File | Unblock-File
+    $rootPath = (Get-Item $PSScriptRoot).Parent.Parent.FullName
+    Get-ChildItem -Path $rootPath -Recurse -File | Unblock-File
 
     # Variables
-    $labInfoPath = 'E:\Configfiles\LabInfo.txt'
+    $labInfoPath = Join-Path -Path $rootPath -ChildPath 'Configfiles\LabInfo.txt'
 
     # Get the lab number
     Write-Host
@@ -41,7 +42,8 @@ Function Add-20533DEnvironment
         }
     } While ($answer -notmatch "[YN]")
 
-    Start-Transcript -Path "E:\Logs\New-20533DEnvironment-$labNumber.log" -IncludeInvocationHeader -Append -Force
+    $transcriptPath = Join-Path -Path $rootPath -ChildPath "Logs\New-20533DEnvironment-$labNumber.log"
+    Start-Transcript -Path $transcriptPath  -IncludeInvocationHeader -Append -Force
 
     Write-Host
     Write-Host "Now setting up Lab $labNumber" -ForegroundColor White
@@ -51,7 +53,7 @@ Function Add-20533DEnvironment
 
     $global:20533DlabNumberGlobal = $labNumber
     $labNumberTwoDigit = ([int]$global:20533DlabNumberGlobal).ToString("00")
-    $labFilesPath = 'E:\Labfiles'
+    $labFilesPath = Join-Path -Path $rootPath -ChildPath 'Labfiles'
 
     # Select the setup steps required for this lab
     Switch ($labNumber)

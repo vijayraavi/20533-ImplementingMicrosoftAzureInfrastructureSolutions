@@ -20,7 +20,8 @@ Function Set-20533DEnvironment
     )
 
     $labNumberTwoDigit = ([int]$global:20533DlabNumberGlobal).ToString("00")
-    $labStartupFolder = "E:\Labfiles\Lab$labNumberTwoDigit\Starter"
+    $rootPath = (Get-Item $PSScriptRoot).Parent.Parent.FullName
+    $labStartupFolder = Join-Path -Path $rootPath -ChildPath "Labfiles\Lab$labNumberTwoDigit\Starter"
 
     Write-Host "lab startup folder is $labStartupFolder"
 

@@ -52,11 +52,14 @@
         }
     } While ($answer -notmatch "[YN]")
 
+    $rootPath = (Get-Item $PSScriptRoot).Parent.Parent.FullName
+    $transcriptPath = ""
     If ($20533DlabNumberGlobal) {
-        Start-Transcript -Path "E:\Logs\Remove-20533DEnvironment-$20533DlabNumberGlobal.log" -IncludeInvocationHeader -Append -Force
+        $transcriptPath = Join-Path -Path $rootPath -ChildPath "Logs\Remove-20533DEnvironment-$20533DlabNumberGlobal.log"
     } else {
-        Start-Transcript -Path "E:\Logs\Remove-20533DEnvironment-0.log" -IncludeInvocationHeader -Append -Force
+        $transcriptPath = Join-Path -Path $rootPath -ChildPath "Logs\Remove-20533DEnvironment-0.log"
     }
+    Start-Transcript -Path $transcriptPath -IncludeInvocationHeader -Append -Force
 
     foreach ($resourceGroupName in (Get-AzureRMResourceGroup).ResourceGroupName) {
         if ($resourceGroupName -like "20533D$labNumberTwoDigit*") {
