@@ -41,7 +41,7 @@
             D {# Get the lab number
                 Write-Host
                 Do {
-                    Write-Host -NoNewline "Which lab environment do you wan to remove? Type a number from 1 - 11:   " -ForegroundColor Magenta
+                    Write-Host -NoNewline "Which lab environment do you want to remove? Type a number from 1 - 11:   " -ForegroundColor Magenta
                     $labNumber = Read-Host 
                 } While ((1..11) -notcontains $labNumber)
                 $global:20533DlabNumberGlobal = $labNumber
