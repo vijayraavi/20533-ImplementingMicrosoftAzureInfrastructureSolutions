@@ -16,7 +16,7 @@ $directory = New-AzureStorageDirectory -Share $share -Path $directoryName
 # Set the local source folder
 $rootPath = (Get-Item $PSScriptRoot).Parent.Parent.FullName
 
-$sourceFolder = Join-Path -Path $rootPath -ChildPath 'LabFiles\Lab06\Starter\invoices'
+$sourceFolder = Join-Path -Path $rootPath -ChildPath 'Lab06\Starter\invoices'
 
 # Upload each file in the local folder to the directory in the share
 $files = Get-ChildItem -Path $sourceFolder -File
