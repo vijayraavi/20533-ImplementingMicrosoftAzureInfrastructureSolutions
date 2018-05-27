@@ -3,7 +3,7 @@ Lab 2A and 2B. Implementing Azure Virtual Networks. Setup will set the global va
 Lab 3A and 3B. Deploying Azure VMs. Setup will set the global variables representing the Azure subscription and the Azure region you designate.
 Lab 4. Managing Azure VMs. Setup will set the global variables representing the Azure subscription and the Azure region you designate. It will also deploy three Windows Server 2016 Azure VMs in the same resource group in that region. 
 Lab 5. Implementing Azure Web Apps. Setup will set the global variables representing the Azure subscription and the Azure region you designate.
-Lab 6. Planning and Implementing Azure Storage. Setup will set the global variables representing the Azure subscription and the Azure region you designate.
+Lab 6. Planning and Implementing Azure Storage. Setup will set the global variables representing the Azure subscription and the Azure region you designate. It will also deploy one Windows Server 2016 Azure VM in that region. 
 Lab 7A and 7B. Implementing containers in Azure. Setup will set the global variables representing the Azure subscription and the Azure region you designate. It will also deploy a Windows Server 2016 Standard D2 v3 Azure VM with the Hyper-V server role in that region.
 Lab 8. Implementing Azure Cloud Services. Setup will set the global variables representing the Azure subscription and the Azure region you designate.
 Lab 9. Implementing Azure AD. Setup will set the global variables representing the Azure subscription and the Azure region you designate.
