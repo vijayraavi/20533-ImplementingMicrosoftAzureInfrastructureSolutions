@@ -142,15 +142,30 @@ Function Set-20533DEnvironment
         }
     }
     else {
-        New-AzureRmResourceGroupDeployment -Name ((Get-ChildItem $TemplateFile).BaseName + '-' + ((Get-Date).ToUniversalTime()).ToString('MMdd-HHmm')) `
-                                           -ResourceGroupName $ResourceGroupName `
-                                           -TemplateFile $TemplateFile `
-                                           -TemplateParameterFile $TemplateParametersFile `
-                                           @OptionalParameters `
-                                           -Force -Verbose `
-                                           -ErrorVariable ErrorMessages
-        if ($ErrorMessages) {
-            Write-Output '', 'Template deployment returned the following errors:', @(@($ErrorMessages) | ForEach-Object { $_.Exception.Message.TrimEnd("`r`n") })
-        }
+       
+        $continueDeployment = $True
+        
+        While ($continueDeployment -eq $True){
+
+            New-AzureRmResourceGroupDeployment -Name ((Get-ChildItem $TemplateFile).BaseName + '-' + ((Get-Date).ToUniversalTime()).ToString('MMdd-HHmm')) `
+                                                -ResourceGroupName $ResourceGroupName `
+                                                -TemplateFile $TemplateFile `
+                                                -TemplateParameterFile $TemplateParametersFile `
+                                                @OptionalParameters `
+                                                -Force -Verbose `
+                                                -ErrorVariable ErrorMessages
+           If ($ErrorMessages) {
+                Write-Output '', 'Template deployment returned the following errors:', @(@($ErrorMessages) | ForEach-Object { $_.Exception.Message.TrimEnd("`r`n") })
+
+                $retry = Read-Host "Would you like to retry the deployment? Y/N:"
+                $retry = $retry.ToUpper()
+                
+                # Retry Deployment again if there was an error, giving you a change to re-enter vmSize
+                if ($retry -eq "N"){
+                    $continueDeployment = $False
+                }                
+           }
+        $continueDeployment = $False 
+       }
     }
 }
