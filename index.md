@@ -4,7 +4,7 @@ permalink: index.html
 layout: home
 ---
 
-Hyperlinks to each of 20533’s lab exercises are listed below.
+Hyperlinks to each of the 20533’s lab exercises are listed below.
 
 ---
 
