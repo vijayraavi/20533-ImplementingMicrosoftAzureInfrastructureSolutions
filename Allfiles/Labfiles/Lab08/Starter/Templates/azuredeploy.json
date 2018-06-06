@@ -16,9 +16,11 @@
     },
     "windowsOSVersion": {
       "type": "string",
-      "defaultValue": "2016-Datacenter",
+      "defaultValue": "2016-Datacenter-Server-Core-smalldisk",
       "allowedValues": [
-        "2016-Datacenter"
+        "2016-Datacenter",
+        "2016-Datacenter-Server-Core",
+        "2016-Datacenter-Server-Core-smalldisk"
       ],
       "metadata": {
         "description": "The Windows version for the VM."
@@ -33,16 +35,16 @@
   },
   "variables": {
     "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'sawinvm')]",
-    "nicName": "20533E0601-nic",
+    "nicName": "20533E0801-nic",
     "addressPrefix": "10.0.0.0/16",
     "subnetName": "subnet-0",
     "subnetPrefix": "10.0.0.0/24",
-    "publicIPAddressName": "20533E0601-pip",
-    "vmName": "20533E0601-vm1",
-    "virtualNetworkName": "20533E0601-vnet",
+    "publicIPAddressName": "20533E0801-pip",
+    "vmName": "20533E0801-vm1",
+    "virtualNetworkName": "20533E0801-vnet",
     "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]",
     "dnsLabelPrefix": "[concat('dns', uniquestring(resourceGroup().id))]",
-    "networkSecurityGroupName": "20533E0601-nsg"
+    "networkSecurityGroupName": "20533E0801-nsg"
   },
   "resources": [
     {
@@ -145,14 +147,7 @@
           },
           "osDisk": {
             "createOption": "FromImage"
-          },
-          "dataDisks": [
-            {
-              "diskSizeGB": "128",
-              "lun": 0,
-              "createOption": "Empty"
-            }
-          ]
+          }
         },
         "networkProfile": {
           "networkInterfaces": [

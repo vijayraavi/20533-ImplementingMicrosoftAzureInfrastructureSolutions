@@ -4,21 +4,21 @@
   "parameters": {
     "virtualNetworkName": {
       "type": "string",
-      "defaultValue": "20533D0401-vnet1",
+      "defaultValue": "20533E0401-vnet1",
       "metadata": {
         "description": "This is the name of the Virtual Network"
       }
     },
     "networkInterfaceName": {
       "type": "string",
-      "defaultValue": "20533D0401-nic",
+      "defaultValue": "20533E0401-nic",
       "metadata": {
         "description": "This is the prefix name of the Network interfaces"
       }
     },
     "vmNamePrefix": {
       "type": "string",
-      "defaultValue": "20533D0401-vm",
+      "defaultValue": "20533E0401-vm",
       "metadata": {
         "description": "Prefix to use for VM names"
       }
@@ -64,16 +64,16 @@
     }
   },
   "variables": {
-    "availabilitySetName": "20533D0401-avset",
+    "availabilitySetName": "20533E0401-avset",
     "storageAccountType": "Standard_LRS",
-    "storageAccountName": "[concat('20533d0401', uniqueString(resourceGroup().id))]",
+    "storageAccountName": "[concat(toLower('20533e0401'), uniqueString(resourceGroup().id))]",
     "subnet1Name": "web",
     "subnet2Name": "app",
     "subnet3Name": "database",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables ('subnet1Name'))]",
     "numberOfInstances": 2,
-    "networkSecurityGroupName": "20533D0401-web-nsg"
+    "networkSecurityGroupName": "20533E0401-web-nsg"
   },
   "resources": [
     {

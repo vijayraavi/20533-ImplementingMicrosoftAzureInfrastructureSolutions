@@ -2,29 +2,29 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "virtualMachineSize": {
+        "vmSize": {
             "type": "string",
             "metadata": {
                 "description": "Virtual machine size"
             }
         },
-      "virtualMachineName": {
+      "vmName": {
         "type": "string",
-        "defaultValue": "20533D0202-vm1",
+        "defaultValue": "20533E0202-vm1",
         "metadata": {
-          "description": "Virtual machine name"
+          "description": "VM name"
         }
       },
         "adminUsername": {
             "type": "string",
             "metadata": {
-                "description": "Default Admin username"
+                "description": "Admin username"
             }
         },
         "adminPassword": {
             "type": "securestring",
             "metadata": {
-                "description": "Default Admin password"
+                "description": "Admin password"
             }
         },
         "storageAccountType": {
@@ -40,36 +40,36 @@
         },
       "virtualNetworkName": {
         "type": "string",
-        "defaultValue": "20533D0202-vnet",
+        "defaultValue": "20533E0202-vnet",
         "metadata": {
           "description": "Virtual network name"
         }
       }
     },
   "variables": {
-    "virtualMachineName": "[parameters('virtualMachineName')]",
-    "nic1": "20533D0202-nic1",
+    "vmName": "[parameters('vmName')]",
+    "nic1": "20533E0202-nic1",
     "virtualNetworkName": "[parameters('virtualNetworkName')]",
     "subnet1Name": "subnet-1",
-    "publicIPAddressName": "20533D0202-pip1",
+    "publicIPAddressName": "20533E0202-pip1",
     "subnet1Ref": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnet1Name'))]",
-    "diagStorageAccountName": "[concat('diags',uniqueString(resourceGroup().id))]",
-    "networkSecurityGroupName": "20533D0202-nsg1"
+    "diagStorageAccountName": "[concat(toLower('20533e'),uniqueString(resourceGroup().id))]",
+    "networkSecurityGroupName": "20533E0202-nsg1"
   },
     "resources": [
         {
-            "name": "[variables('virtualMachineName')]",
+            "name": "[variables('vmName')]",
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2017-03-30",
             "location": "[resourceGroup().location]",
-            "comments": "This is the virtual machine that you're building.",
+            "comments": "This is the VM that you're building.",
             "dependsOn": [
                 "[variables('nic1')]",
                 "[variables('diagStorageAccountName')]"
             ],
             "properties": {
                 "osProfile": {
-                    "computerName": "[variables('virtualMachineName')]",
+                    "computerName": "[variables('vmName')]",
                     "adminUsername": "[parameters('adminUsername')]",
                     "adminPassword": "[parameters('adminPassword')]",
                     "windowsConfiguration": {
@@ -77,7 +77,7 @@
                     }
                 },
                 "hardwareProfile": {
-                    "vmSize": "[parameters('virtualMachineSize')]"
+                    "vmSize": "[parameters('vmSize')]"
                 },
                 "storageProfile": {
                     "imageReference": {

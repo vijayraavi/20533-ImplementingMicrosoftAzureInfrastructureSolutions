@@ -5,33 +5,32 @@
     "vmName": {
       "type": "string",
       "metadata": {
-        "description": "VM name."
+        "description": "VM name"
       }
     },
     "adminUsername": {
       "type": "string",
-      "defaultValue": "Student",
       "metadata": {
-        "description": "VM Admin user name."
+        "description": "VM Admin user name"
       }
     },
     "adminPassword": {
       "type": "securestring",
       "metadata": {
-        "description": "VM Admin user password."
+        "description": "VM Admin user password"
       }
     },
     "virtualNetworkName": {
       "type": "string",
       "metadata": {
-        "description": "VNet name."
+        "description": "VNet name"
       }
     },
     "resourceGroupName": {
       "type": "string",
-      "defaultValue": "20533D0301-LabRG",
+      "defaultValue": "20533E0301-LabRG",
       "metadata": {
-        "description": "Resource Group name."
+        "description": "Resource Group name"
       }
     },
     "subnetName": {
@@ -72,9 +71,9 @@
     "publicIPAddressType": "Dynamic",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetName'))]",
     "vnetID": "[resourceId(parameters('resourceGroupName'), 'Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
-    "storageAccountName": "[concat(tolower('20533d03'), uniqueString(resourceGroup().id))]",
-    "avSetName": "20533D0301-web-avset",
-    "networkSecurityGroupName": "20533D0301-web-nsg"
+    "storageAccountName": "[concat(toLower('20533e03'), uniqueString(resourceGroup().id))]",
+    "avSetName": "20533E0301-web-avset",
+    "networkSecurityGroupName": "20533E0301-web-nsg"
   },
   "resources": [
     {

@@ -2,36 +2,36 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "virtualMachineSize": {
+        "vmSize": {
             "type": "string",
             "metadata": {
-                "description": "Virtual machine size"
+                "description": "VM size"
             }
         },
-        "virtualMachine1Name": {
+        "vm1Name": {
             "type": "string",
-            "defaultValue": "20533D0201-vm1",
+            "defaultValue": "20533E0201-vm1",
             "metadata": {
-                "description": "Virtual machine name"
+                "description": "VM name"
             }
         },
-        "virtualMachine2Name": {
+        "vm2Name": {
             "type": "string",
-            "defaultValue": "20533D0201-vm2",
+            "defaultValue": "20533E0201-vm2",
             "metadata": {
-                "description": "Virtual machine name"
+                "description": "VM name"
             }
         },
         "adminUsername": {
             "type": "string",
             "metadata": {
-                "description": "Default Admin username"
+                "description": "Admin username"
             }
         },
         "adminPassword": {
             "type": "securestring",
             "metadata": {
-                "description": "Default Admin password"
+                "description": "Admin password"
             }
         },
         "storageAccountType": {
@@ -47,42 +47,42 @@
         },
         "virtualNetworkName": {
             "type": "string",
-            "defaultValue": "20533D0201-vnet",
+            "defaultValue": "20533E0201-vnet",
             "metadata": {
                 "description": "Virtual network name"
             }
         }
     },
     "variables": {
-        "virtualMachine1Name": "[parameters('virtualMachine1Name')]",
-        "virtualMachine2Name": "[parameters('virtualMachine2Name')]",
-        "nic1": "20533D0201-nic1",
-        "nic2": "20533D0201-nic2",
+        "vm1Name": "[parameters('vm1Name')]",
+        "vm2Name": "[parameters('vm2Name')]",
+        "nic1": "20533E0201-nic1",
+        "nic2": "20533E0201-nic2",
         "virtualNetworkName": "[parameters('virtualNetworkName')]",
         "subnet1Name": "subnet-1",
         "subnet2Name": "subnet-2",
-        "publicIPAddress1Name": "20533D0201-pip1",
-        "publicIPAddress2Name": "20533D0201-pip2",
+        "publicIPAddress1Name": "20533E0201-pip1",
+        "publicIPAddress2Name": "20533E0201-pip2",
         "subnet1Ref": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnet1Name'))]",
         "subnet2Ref": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnet2Name'))]",
-        "diagStorageAccountName": "[concat('20533d0201',uniqueString(resourceGroup().id))]",
-        "networkSecurityGroup1Name": "20533D0201-nsg1",
-        "networkSecurityGroup2Name": "20533D0201-nsg2"
+        "diagStorageAccountName": "[concat(toLower('20533e0201'),uniqueString(resourceGroup().id))]",
+        "networkSecurityGroup1Name": "20533E0201-nsg1",
+        "networkSecurityGroup2Name": "20533E0201-nsg2"
     },
     "resources": [
         {
-            "name": "[variables('virtualMachine1Name')]",
+            "name": "[variables('vm1Name')]",
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2017-03-30",
             "location": "[resourceGroup().location]",
-            "comments": "The first virtual machine",
+            "comments": "The first VM",
             "dependsOn": [
                 "[variables('nic1')]",
                 "[variables('diagStorageAccountName')]"
             ],
             "properties": {
                 "osProfile": {
-                    "computerName": "[variables('virtualMachine1Name')]",
+                    "computerName": "[variables('vm1Name')]",
                     "adminUsername": "[parameters('adminUsername')]",
                     "adminPassword": "[parameters('adminPassword')]",
                     "windowsConfiguration": {
@@ -90,7 +90,7 @@
                     }
                 },
                 "hardwareProfile": {
-                    "vmSize": "[parameters('virtualMachineSize')]"
+                    "vmSize": "[parameters('vmSize')]"
                 },
                 "storageProfile": {
                     "imageReference": {
@@ -123,18 +123,18 @@
             }
         },
         {
-            "name": "[variables('virtualMachine2Name')]",
+            "name": "[variables('vm2Name')]",
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2017-03-30",
             "location": "[resourceGroup().location]",
-            "comments": "The second virtual machine",
+            "comments": "The second VM",
             "dependsOn": [
                 "[variables('nic2')]",
                 "[variables('diagStorageAccountName')]"
             ],
             "properties": {
                 "osProfile": {
-                    "computerName": "[variables('virtualMachine1Name')]",
+                    "computerName": "[variables('vm1Name')]",
                     "adminUsername": "[parameters('adminUsername')]",
                     "adminPassword": "[parameters('adminPassword')]",
                     "windowsConfiguration": {
@@ -142,7 +142,7 @@
                     }
                 },
                 "hardwareProfile": {
-                    "vmSize": "[parameters('virtualMachineSize')]"
+                    "vmSize": "[parameters('vmSize')]"
                 },
                 "storageProfile": {
                     "imageReference": {

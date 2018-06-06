@@ -4,7 +4,7 @@
   "parameters": {
     "vmName": {
       "type": "string",
-      "defaultValue": "20533D0401-vm2",
+      "defaultValue": "20533E0401-vm2",
       "metadata": {
         "description": "Name of the VM"
       }
@@ -50,14 +50,14 @@
     },
     "virtualNetworkName": {
       "type": "string",
-      "defaultValue": "20533D0401-vnet1",
+      "defaultValue": "20533E0401-vnet1",
       "metadata": {
         "description": "VNET Name"
       }
     },
     "virtualNetworkResourceGroup": {
       "type": "string",
-      "defaultValue": "20533D0401-LabRG",
+      "defaultValue": "20533E0401-LabRG",
       "metadata": {
         "description": "Resource Group VNET is deployed in"
       }
@@ -71,7 +71,7 @@
     },
     "publicIPName": {
       "type": "string",
-      "defaultValue": "20533D0401-pip2",
+      "defaultValue": "20533E0401-pip2",
       "metadata": {
         "description": "Name of Public IP"
       }
@@ -94,8 +94,8 @@
   "variables": {
     "vnetID": "[resourceId(parameters('virtualNetworkResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', parameters('subnetName'))]",
-    "diagStorageAccountName": "[concat('20533d0401',uniqueString(resourceGroup().id))]",
-    "nicName": "20533D0401-nic2"
+    "diagStorageAccountName": "[concat(toLower('20533e0401'),uniqueString(resourceGroup().id))]",
+    "nicName": "20533E0401-nic2"
   },
   "resources": [
     {

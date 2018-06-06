@@ -4,14 +4,12 @@
   "parameters": {
     "adminUsername": {
       "type": "string",
-      "defaultValue": "Student",
       "metadata": {
         "description": "The name of the administrator account of the new VM and domain"
       }
     },
     "adminPassword": {
-      "type": "string",
-      "defaultValue": "Pa55w.rd1234",
+      "type": "securestring",
       "metadata": {
         "description": "The password for the administrator account of the new VM and domain"
       }
@@ -54,20 +52,20 @@
     }
   },
   "variables": {
-    "virtualNetworkName": "20533D1001-vnet",
+    "virtualNetworkName": "20533E1001-vnet",
     "virtualNetworkAddressRange": "10.0.0.0/22",
     "storageAccountName": "[concat('adsa', uniquestring(resourceGroup().id))]",
     "adLBFE": "lbfe",
     "adLBBE": "lbbe",
     "adRDPNAT": "default-allow-rdp",
-    "adNicName": "20533D1001-nic",
+    "adNicName": "20533E1001-nic",
     "adNicIPAddress": "10.0.0.4",
-    "adVMName": "20533D1001-vm1",
+    "adVMName": "20533E1001-vm1",
     "adSubnetName": "ad",
     "adSubnetAddressPrefix": "10.0.0.0/24",
-    "publicIPAddressName": "20533D1001-pip",
+    "publicIPAddressName": "20533E1001-pip",
     "adAvailabilitySetName": "2033D1001-avset",
-    "adLBName": "20533D1001-lb",
+    "adLBName": "20533E1001-lb",
     "dnsPrefix": "[concat('dns', uniquestring(resourceGroup().id))]"
   },
   "resources": [

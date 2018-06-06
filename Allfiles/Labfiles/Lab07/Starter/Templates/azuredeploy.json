@@ -4,106 +4,99 @@
   "parameters": {
     "adminUsername": {
       "type": "string",
-      "defaultValue": "Student",
       "metadata": {
-        "description": "The name of the administrator account of the new VM and domain"
+        "description": "The name of the administrator account of the VM"
       }
     },
     "adminPassword": {
-      "type": "string",
-      "defaultValue": "Pa55w.rd1234",
-      "metadata": {
-        "description": "The password for the administrator account of the new VM and domain"
-      }
-    },
-    "windowsserver":{
-      "type": "string",
-       "metadata": {
-        "description": "The version of Windows Server"
-      },
-      "defaultValue": "2016-Datacenter",
-      "allowedValues": [
-        "2016-Datacenter"
-      ]
-    },
-    "_artifactsLocation": {
-      "type": "string",
-      "metadata": {
-        "description": "The location of resources, such as templates and DSC modules, that the template depends on"
-      }
-    },
-    "_artifactsLocationSasToken": {
       "type": "securestring",
       "metadata": {
-        "description": "Auto-generated token to access _artifactsLocation"
-      },
-      "defaultValue": ""
+        "description": "The password for the administrator account of the VM"
+      }
     },
      "vmSize": {
       "type": "string",
       "metadata": {
         "description": "VM size"
       }
+    },
+    "dnsNameForPublicIP": {
+      "type": "string",
+      "defaultValue": "[toLower(concat('l0720533e',uniqueString(resourceGroup().id, deployment().name)))]",
+      "metadata": {
+        "description": "Unique DNS Name for the Public IP used to access the VM"
+      }
+    },
+    "ubuntuOSVersion": {
+      "type": "string",
+      "defaultValue": "16.04.0-LTS",
+      "metadata": {
+        "description": "The Ubuntu version for the VM"
+      },
+      "allowedValues": [
+        "14.04.4-LTS",
+        "15.10",
+        "16.04.0-LTS"
+      ]
     }
   },
   "variables": {
-    "virtualNetworkName": "20533D0701-vnet",
-    "virtualNetworkAddressRange": "10.0.0.0/22",
-    "storageAccountName": "[concat('docker', uniquestring(resourceGroup().id))]",
-    "dockerRDPNAT": "default-allow-rdp",
-    "dockerNicName": "20533D0701-nic",
-    "dockerVMName": "20533D0701-vm0",
-    "dockerSubnetName": "subnet-0",
-    "dockerSubnetAddressPrefix": "10.0.0.0/24",
-    "publicIPAddressName": "20533D0701-pip"
+    "imagePublisher": "Canonical",
+    "imageOffer": "UbuntuServer",
+    "OSDiskName": "20533elab07osdisk01",
+    "nicName": "20533E0701-nic",
+    "extensionName": "DockerExtension",
+    "addressPrefix": "10.0.0.0/22",
+    "subnetName": "subnet-0",
+    "subnetPrefix": "10.0.0.0/24",
+    "diskStorageType": "Standard_LRS",
+    "publicIPAddressName": "20533E0701-pip",
+    "publicIPAddressType": "Dynamic",
+    "vmName": "20533E0701-vm0",
+    "virtualNetworkName": "20533E0701-vnet",
+    "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]",
+    "location": "[resourceGroup().location]",
+    "networkSecurityGroupName": "20533E0701-web-nsg"
   },
   "resources": [
     {
-      "type": "Microsoft.Storage/storageAccounts",
-      "name": "[variables('storageAccountName')]",
-      "apiVersion": "2017-06-01",
-      "location": "[resourceGroup().location]",
-      "sku": {
-        "name": "Standard_LRS"
-      },
-      "kind": "Storage",
-      "properties": {}
-    },
-    {
+      "apiVersion": "2018-02-01",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIPAddressName')]",
-      "apiVersion": "2017-06-01",
-      "location": "[resourceGroup().location]",
+      "location": "[variables('location')]",
       "properties": {
-         "publicIPAllocationMethod": "Dynamic"
+        "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
+        "dnsSettings": {
+          "domainNameLabel": "[parameters('dnsNameForPublicIP')]"
+        }
       }
     },
     {
+      "apiVersion": "2018-02-01",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('virtualNetworkName')]",
-      "apiVersion": "2017-06-01",
-      "location": "[resourceGroup().location]",
+      "location": "[variables('location')]",
       "properties": {
-         "addressSpace": {
-             "addressPrefixes": [
-                 "10.0.0.0/22"
-             ]
-         },
-         "subnets": [
-             {
-                "name": "[variables('dockerSubnetName')]",
-                "properties": {
-                    "addressPrefix": "10.0.0.0/24"
-                }
-             }
+        "addressSpace": {
+          "addressPrefixes": [
+            "[variables('addressPrefix')]"
           ]
-       }
+        },
+        "subnets": [
+          {
+            "name": "[variables('subnetName')]",
+            "properties": {
+              "addressPrefix": "[variables('subnetPrefix')]"
+            }
+          }
+        ]
+      }
     },
     {
+      "apiVersion": "2018-02-01",
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('dockerNicName')]",
-      "apiVersion": "2017-06-01",
-      "location": "[resourceGroup().location]",
+      "name": "[variables('nicName')]",
+      "location": "[variables('location')]",
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
         "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
@@ -115,88 +108,129 @@
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName'))]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
               },
               "subnet": {
-                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('dockerSubnetName'))]"
+                "id": "[variables('subnetRef')]"
               }
             }
           }
-        ]
+        ],
+        "networkSecurityGroup": {
+            "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]"
+        }
       }
     },
     {
+      "apiVersion": "2017-12-01",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[variables('dockerVMName')]",
-      "apiVersion": "2017-03-30",
-      "location": "[resourceGroup().location]",
+      "name": "[variables('vmName')]",
+      "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
-        "[resourceId('Microsoft.Network/networkInterfaces', variables('dockerNicName'))]"
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
       ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('vmSize')]"
         },
         "osProfile": {
-          "computerName": "[variables('dockerVMName')]",
+          "computerName": "[variables('vmName')]",
           "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]",
-          "windowsConfiguration": {
-            "provisionVmAgent": "true"
-          }
+          "adminPassword": "[parameters('adminPassword')]"
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "MicrosoftWindowsServer",
-            "offer": "WindowsServer",
-            "sku": "[parameters('windowsserver')]",
+            "publisher": "[variables('imagePublisher')]",
+            "offer": "[variables('imageOffer')]",
+            "sku": "[parameters('ubuntuOSVersion')]",
             "version": "latest"
           },
           "osDisk": {
-            "createOption": "FromImage"
-          },
-          "dataDisks": []
+            "name": "[concat(variables('vmName'),'_OSDisk')]",
+            "caching": "ReadWrite",
+            "createOption": "FromImage",
+            "managedDisk": {
+
+              "storageAccountType": "[variables('diskStorageType')]"
+
+            }
+          }
         },
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('dockerNicName'))]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
             }
           ]
-        },
-        "diagnosticsProfile": {
-          "bootDiagnostics": {
-            "enabled": true,
-            "storageUri": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2017-06-01').primaryEndpoints['blob']]"
-          }
         }
-      },
-      "resources": [
-        {
-          "type": "extensions",
-          "name": "InstallHyperV",
-          "apiVersion": "2015-06-15",
-          "location": "[resourceGroup().location]",
-          "dependsOn": [
-            "[resourceId('Microsoft.Compute/virtualMachines', variables('dockerVMName'))]"
-          ],
-          "properties": {
-            "publisher": "Microsoft.Powershell",
-            "type": "DSC",
-            "typeHandlerVersion": "2.26",
-            "autoUpgradeMinorVersion": true,
-            "settings": {
-              "ModulesUrl": "[concat(parameters('_artifactsLocation'), '/DSC/InstallHyperV.zip', parameters('_artifactsLocationSasToken'))]",
-              "ConfigurationFunction": "InstallHyperV.ps1\\InstallHyperV",
-              "Properties": {
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('vmName'),'/', variables('extensionName'))]",
+      "apiVersion": "2017-12-01",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.Azure.Extensions",
+        "type": "DockerExtension",
+        "typeHandlerVersion": "1.0",
+        "autoUpgradeMinorVersion": true,
+        "settings": {},
+        "protectedSettings": {}
+      }
+    },
+    {
+      "name": "[variables('networkSecurityGroupName')]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2018-02-01",
+      "location": "[variables('location')]",
+      "comments": "Network Security Group (NSG) for Primary NIC",
+      "properties": {
+         "securityRules": [
+            {
+              "name": "default-allow-ssh",
+              "properties": {
+                 "priority": 1000,
+                 "sourceAddressPrefix": "*",
+                 "protocol": "Tcp",
+                 "destinationPortRange": "22",
+                 "access": "Allow",
+                 "direction": "Inbound",
+                 "sourcePortRange": "*",
+                 "destinationAddressPrefix": "*"
               }
             },
-            "protectedSettings": {
+            {
+              "name": "custom-allow-http",
+              "properties": {
+                 "priority": 1100,
+                 "sourceAddressPrefix": "*",
+                 "protocol": "Tcp",
+                 "destinationPortRange": "80",
+                 "access": "Allow",
+                 "direction": "Inbound",
+                 "sourcePortRange": "*",
+                 "destinationAddressPrefix": "*"
+              }
+            },
+            {
+              "name": "custom-allow-8080",
+              "properties": {
+                "priority": 1200,
+                "sourceAddressPrefix": "*",
+                "protocol": "Tcp",
+                "destinationPortRange": "8080",
+                "access": "Allow",
+                "direction": "Inbound",
+                "sourcePortRange": "*",
+                "destinationAddressPrefix": "*"
+              }
             }
-          }
-        }
-      ]
+         ]
+      }
     }
   ]
 }
