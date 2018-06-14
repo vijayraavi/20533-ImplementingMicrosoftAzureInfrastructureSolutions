@@ -18,7 +18,7 @@ $pipName    = "$vmName-pip"
 $nicName    = "$vmName-nic"
 $osDiskName = "$vmName-osdisk"
 $osDiskSize = 128
-$osDiskType = 'Standard_LRS'
+$osDiskType = (Get-AzureRmResource -ResourceGroupName $rgName -ResourceType Microsoft.Compute/disks)[0].Sku.name
 
 # Identify virtual network and subnet
 $vnet = Get-AzureRmVirtualNetwork -Name $vnetName -ResourceGroupName $rgName
