@@ -54,7 +54,12 @@ Add-AzureRmVMNetworkInterface -VM $vmConfig -Id $nic.Id
 Set-AzureRmVMBootDiagnostics -Enable -ResourceGroupName $rgName -VM $vmConfig -StorageAccountName $storageAccount[0].StorageAccountName
 Set-AzureRmVMOperatingSystem -VM $vmConfig -Windows -ComputerName $vmName -Credential $adminCreds 
 Set-AzureRmVMSourceImage -VM $vmConfig -PublisherName $pubName -Offer $offerName -Skus $skuName -Version 'latest'
-Set-AzureRmVMOSDisk -VM $vmConfig -Name $osDiskName -DiskSizeInGB $osDiskSize -StorageAccountType $osDiskType -CreateOption fromImage
+try {
+    Set-AzureRmVMOSDisk -VM $vmConfig -Name $osDiskName -DiskSizeInGB $osDiskSize -StorageAccountType $osDiskType -CreateOption fromImage
+} catch {
+    $osDiskType = (Get-AzureRmResource -ResourceGroupName $rgName -ResourceType Microsoft.Compute/disks)[0].Sku.name -Replace '_',""
+    Set-AzureRmVMOSDisk -VM $vmConfig -Name $osDiskName -DiskSizeInGB $osDiskSize -StorageAccountType $osDiskType -CreateOption fromImage
+}
 
 #Create the VM
 New-AzureRmVM -ResourceGroupName $rgName -Location $location -VM $vmConfig
