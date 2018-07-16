@@ -24,5 +24,5 @@ Refer to the 20533CGitHubUserGuideforMCTs.pdf file on the Download Center for de
 
 Note: After you download the latest lab files from GitHub and copy them to the student computers, ensure that the student computer is restarted before students start the labs. This ensures that any PowerShell modules that have previously been run will be replaced in memory by the latest versions. In addition, since the scripts on GitHub are not codesigned, students need to run the following command to ensure that the scripts will run:
 Set-ExecutionPolicy –ExecutionPolicy Bypass –Force
-This command should be run at the beginning of the class, and applied to the VM image if possible. 
+This command should be run at the beginning of the class, and applied to the VM image if possible. Read more about [Set-ExecutionPolicy](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-6)
 
