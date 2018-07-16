@@ -20,7 +20,7 @@ Notes about the Demos in the course
 What about changes to the student handbook?
 - We will review the student handbook (including demos) on a quarterly basis and update through the normal MOC release channels as needed.
 
-Refer to the 20533CGitHubUserGuideforMCTs.pdf file on the Download Center for detailed instructions for using GitHub. This document is also available on the GitHub repo as 20533CGitHubUserGuideforMCTs.md.  
+Refer to the 20533CGitHubUserGuideforMCTs.pdf file on the Download Center for detailed instructions for using GitHub. This document is also available on the GitHub repo as [20533CGitHubUserGuideforMCTs.md](https://github.com/MicrosoftLearning/20533-ImplementingMicrosoftAzureInfrastructureSolutions/blob/master/20533EGitHubUserGuideforMCTs.md).  
 
 Note: After you download the latest lab files from GitHub and copy them to the student computers, ensure that the student computer is restarted before students start the labs. This ensures that any PowerShell modules that have previously been run will be replaced in memory by the latest versions. In addition, since the scripts on GitHub are not codesigned, students need to run the following command to ensure that the scripts will run:
 Set-ExecutionPolicy –ExecutionPolicy Bypass –Force
