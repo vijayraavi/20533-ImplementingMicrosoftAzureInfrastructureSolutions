@@ -29,7 +29,7 @@
     },
     "resourceGroupName": {
       "type": "string",
-      "defaultValue": "20533D0301-LabRG",
+      "defaultValue": "20533E0301-LabRG",
       "metadata": {
         "description": "Resource Group name."
       }
@@ -79,9 +79,8 @@
     "publicIPAddressType": "Dynamic",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetName'))]",
     "vnetID": "[resourceId(parameters('resourceGroupName'), 'Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
-    "storageAccountName": "[concat(tolower('20533d03'), uniqueString(resourceGroup().id))]",
-    "avSetName": "20533D0301-app-avset",
-    "networkSecurityGroupName": "20533D0301-app-nsg"
+    "storageAccountName": "[concat(tolower('20533e03'), uniqueString(resourceGroup().id))]",
+    "avSetName": "20533e0301-app-avset",
   },
   "resources": [
     {
