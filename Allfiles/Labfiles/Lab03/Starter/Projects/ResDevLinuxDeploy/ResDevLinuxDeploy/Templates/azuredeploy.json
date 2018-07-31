@@ -81,6 +81,7 @@
     "vnetID": "[resourceId(parameters('resourceGroupName'), 'Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
     "storageAccountName": "[concat(tolower('20533e03'), uniqueString(resourceGroup().id))]",
     "avSetName": "20533e0301-app-avset",
+    "networkSecurityGroupName": "20533e0301-app-nsg"
   },
   "resources": [
     {
